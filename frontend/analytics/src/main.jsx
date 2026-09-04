@@ -11,6 +11,8 @@ const query = new URLSearchParams(window.location.search);
 const sourceFromQuery = query.get('source');
 const bridgeUrl = query.get('ws') || 'localhost:8787';
 const initialSource = sourceFromQuery === 'mock' || sourceFromQuery === 'kafka' ? sourceFromQuery : 'live';
+const initialView = query.get('view') === 'heatmap' ? 'heatmap' : 'topology';
+const prometheusEndpoint = query.get('prom') || '/api/v1/query';
 
 // Tab driven by ?view= query param so links are shareable.
 const initialView = query.get('view') === 'heatmap' ? 'heatmap' : 'topology';
@@ -24,7 +26,7 @@ function streamUrl(source) {
 function App() {
 
   const [source, setSource] = useState(initialSource);
-  const [view, setView] = useState('topology');
+
   const [graph, setGraph] = useState(EMPTY_GRAPH);
   const [connection, setConnection] = useState('connecting');
   const [selected, setSelected] = useState(null);
@@ -105,11 +107,7 @@ function App() {
       <header className="topbar">
         <div className="brand-block">
           <span className="eyebrow">STELLAR / OBSERVABILITY</span>
-          <h1>{view === 'heatmap' ? 'Resource Saturation' : 'Network Topology'}</h1>
-          <p>{view === 'heatmap' ? 'Worker node CPU &amp; Memory heatmap.' : 'Multi-cluster quorum health.'}</p>
-        </div>
 
-            </div>
 
 
 
